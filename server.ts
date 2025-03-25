@@ -19,6 +19,6 @@ serve({
 
     // If they take longer than 60 seconds to send the body, the request will be aborted
     await request.text();
-    return new Response("Hello from Bun #" + id + "!\n");
+    return new Response("Hello from Bun #" + id + "!\n" + `Active requests: ${server.pendingRequests}`);
   }
 });
