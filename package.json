@@ -1,0 +1,19 @@
+{
+  "name": "quickstart",
+  "module": "cluster.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/figlet": "^1.7.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "start": "bun run cluster.ts"
+  },
+  "dependencies": {
+    "figlet": "^1.8.0"
+  }
+}
