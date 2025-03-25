@@ -13,12 +13,14 @@ serve({
   // This is the important part!
   reusePort: true,
 
-  async fetch(request, server) {
+  async fetch(request: Request, server) {
     // Set 60 second timeout for this request
+    const ip = server.requestIP(request);
+    // console.log(ip)
     server.timeout(request, 60);
 
     // If they take longer than 60 seconds to send the body, the request will be aborted
     await request.text();
-    return new Response("Hello from Bun #" + id + "!\n" + `Active requests: ${server.pendingRequests}`);
+    return new Response("Hello from Bun #" + id + "!\n" + `Active requests: ${server.pendingRequests}` + "!\n" + `Your IP is ${ip?.address} (${ip?.family}) (${ip?.port})`);
   }
 });
