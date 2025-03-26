@@ -6,7 +6,7 @@ console.log("number of cpus: ", cpus)
 
 for (let i = 0; i < cpus; i++) {
   buns[i] = spawn({
-    cmd: ["bun", "--watch", "./server.ts"],
+    cmd: ["bun", "--watch", "./server.js"],
     stdout: "inherit",
     stderr: "inherit",
     stdin: "inherit",
