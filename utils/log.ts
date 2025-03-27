@@ -11,3 +11,6 @@ export async function log(requestLog: string) {
         await Bun.write(LOG_PATH, ''.concat(requestLog));
     }
 }
+export function log2consol(requestLog: string) {
+    console.log(requestLog)
+}
