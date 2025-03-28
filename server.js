@@ -7,6 +7,15 @@
   const id = Math.random().toString(36).slice(2);
   console.log('server id: ', id)
 
+  async function build (){
+    await Bun.build({
+      entrypoints: ["./src/frontend.jsx"],
+      outdir: "./out",
+    });
+  }
+
+  build()
+
   serve({
     // hostname: "mydomain.com", // defaults to "0.0.0.0"
     port: process.env['PORT'] || 8080,
@@ -17,9 +26,12 @@
     //   "/csr" : () => new Response(homepage, { headers: { "Content-Type": "text/html" }})
     // },
     routes: {
-      "/":  async () => new Response(await getHTML(), {
+      "/":  async (req, server) => {
+        logging(req, server)
+        return new Response(await getHTML(), {
             headers: { "Content-Type": "text/html" },
-          }),
+          })
+        },
     //   // Add these static routes
       "/styles.css": async () => new Response(await Bun.file("./src/styles.css"), {
         headers: { "Content-Type": "text/css" },

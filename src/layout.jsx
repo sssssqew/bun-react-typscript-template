@@ -17,11 +17,6 @@ function Layout({ children }) {
 }
 
 export default async function getHTML(){
-  await Bun.build({
-    entrypoints: ['./src/frontend.jsx'],
-    outdir: './out',
-    development: true,
-  })
   const stream = await renderToReadableStream(
     <Layout>
       <App />
