@@ -10,7 +10,7 @@ function Layout({ children }) {
       </head>
       <body>
         <div id="root">{children}</div>
-        <script src="/frontend.js"></script>
+        <script type="module" src="/dist/frontend.js"></script>
       </body>
     </html>
   );

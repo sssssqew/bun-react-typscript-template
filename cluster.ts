@@ -4,9 +4,11 @@ const cpus = navigator.hardwareConcurrency; // Number of CPU cores
 const buns = new Array(cpus);
 console.log("number of cpus: ", cpus)
 
+const cmd = process.env["NODE_ENV"] === 'production' ? ["bun", "./server.js"] : ["bun", "--watch", "./server.js"]
+
 for (let i = 0; i < cpus; i++) {
   buns[i] = spawn({
-    cmd: ["bun", "--watch", "./server.js"],
+    cmd: cmd,
     stdout: "inherit",
     stderr: "inherit",
     stdin: "inherit",

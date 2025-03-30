@@ -7,20 +7,35 @@
   const id = Math.random().toString(36).slice(2);
   console.log('server id: ', id)
 
-  async function build (){
-    await Bun.build({
-      entrypoints: ["./src/frontend.jsx"],
-      outdir: "./out",
-    });
+  const buildOptions = process.env["NODE_ENV"] === 'production' ? {
+    entrypoints: ["./src/frontend.jsx"],
+    outdir: "./dist",
+    splitting: true,
+    env: "inline",  // This is needed to inline environment variables
+    minify: {
+      whitespace: true,
+      identifiers: true,
+      syntax: true
+    },
+    sourcemap: "none"
+  }: {
+    entrypoints: ["./src/frontend.jsx"],
+    outdir: "./dist",
   }
 
-  build()
+  async function build (buildOptions){
+    await Bun.build(buildOptions)
+  }
+
+  build(buildOptions)
+  .then(() => console.log('build success'))
+  .catch(e => console.log(`build failed ${e}`))
 
   serve({
     // hostname: "mydomain.com", // defaults to "0.0.0.0"
     port: process.env['PORT'] || 8080,
-    idleTimeout: 255, // 4min. 25sec
-    development: true,
+    idleTimeout: 255, // 4min. 25sec // when i set this, first loading is not working well
+    development: process.env["NODE_ENV"] !== 'production',
     reusePort: true, // Share the same port across multiple processes (only works on linux os)
 
     routes: {
@@ -30,16 +45,33 @@
             headers: { "Content-Type": "text/html" },
           })
         },
-    //   // Add these static routes
+      // Add these static routes
       "/styles.css": async () => new Response(await Bun.file("./src/styles.css"), {
         headers: { "Content-Type": "text/css" },
       }),
-      "/frontend.js": async () => {
-        return new Response(await Bun.file("./out/frontend.js"), {
-          headers: { 
+
+      "/dist/:filename": async (req) => {
+        const filename = req.params.filename;
+        const filePath = `./dist/${filename}`;
+        
+        // Check if the requested file is frontend.js
+        if (filename === 'frontend.js') {
+          return new Response(await Bun.file(filePath), {
+            headers: {
+              "Content-Type": "application/javascript",
+              "Cache-Control": "public, max-age=31536000", // Cache for 1 year
+            },
+          });
+        }
+      
+        // For other files, you can choose not to set caching or set different caching rules
+        return new Response(await Bun.file(filePath), {
+          headers: {
             "Content-Type": "application/javascript",
+            // Optionally set different caching rules or none
+            "Cache-Control": "no-store", // No caching for other files
           },
-        })
+        });
       },
 
     //   "/api/risky": () => {
@@ -51,11 +83,6 @@
     // async fetch(request, server) {  
       // server.timeout(request, 60); // Set 60 second timeout for this request
       // await request.text(); // If they take longer than 60 seconds to send the body, the request will be aborted
-      // if(url.pathname === '/'){
-      //   return new Response(await getHTML(), {
-      //     headers: { "Content-Type": "text/html" },
-      //   });
-      // }
     //   return new Response("Not Found", { status: 404 });
     // },
 
