@@ -59,8 +59,8 @@
 
     // Fallback handler
     async fetch(request, server) {  
-      server.timeout(request, 60); // Set 60 second timeout for this request
-      await request.text(); // If they take longer than 60 seconds to send the body, the request will be aborted
+      // server.timeout(request, 60); // Set 60 second timeout for this request
+      // await request.text(); // If they take longer than 60 seconds to send the body, the request will be aborted
       return new Response("Not Found", { status: 404 });
     },
 
