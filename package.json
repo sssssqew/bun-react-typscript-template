@@ -11,7 +11,8 @@
     "typescript": "^5"
   },
   "scripts": {
-    "start": "bun run cluster.ts"
+    "start": "bun run cluster.ts",
+    "build": "bun run build.js"
   },
   "dependencies": {
     "react": "^19.0.0",

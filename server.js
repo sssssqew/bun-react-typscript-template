@@ -7,29 +7,7 @@
   const id = Math.random().toString(36).slice(2);
   console.log('server id: ', id)
 
-  const buildOptions = process.env["NODE_ENV"] === 'production' ? {
-    entrypoints: ["./src/frontend.jsx"],
-    outdir: "./dist",
-    splitting: true,
-    env: "inline",  // This is needed to inline environment variables
-    minify: {
-      whitespace: true,
-      identifiers: true,
-      syntax: true
-    },
-    sourcemap: "none"
-  }: {
-    entrypoints: ["./src/frontend.jsx"],
-    outdir: "./dist",
-  }
-
-  async function build (buildOptions){
-    await Bun.build(buildOptions)
-  }
-
-  build(buildOptions)
-  .then(() => console.log('build success'))
-  .catch(e => console.log(`build failed ${e}`))
+  
 
   serve({
     // hostname: "mydomain.com", // defaults to "0.0.0.0"
