@@ -13,7 +13,7 @@
   "scripts": {
     "start": "bun run cluster.ts",
     "build": "bun run build.js",
-    "deploy": "curl -fsSL https://bun.sh/install | bash && bun install && bun run build"
+    "deploy": "bun install && bun run build"
   },
   "dependencies": {
     "react": "^19.0.0",
